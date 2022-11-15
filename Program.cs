@@ -97,9 +97,20 @@
         public static void PrintHelp()
         {
             Console.WriteLine("Kommandon:");
-            Console.WriteLine("hjälp    lista denna hjälp");
-            Console.WriteLine("lista    lista att-göra-listan");
-            Console.WriteLine("sluta    spara att-göra-listan och sluta");
+            Console.WriteLine();
+            Console.WriteLine("hjälp      lista denna hjälp");
+            Console.WriteLine();
+            Console.WriteLine("ny         skapa en ny uppgift");
+            Console.WriteLine("beskriv    lista alla Active uppgifter och beskrivning");
+            Console.WriteLine("lista      lista alla Active uppgifter");
+            Console.WriteLine("lista allt lista alla uppgifter oavsett status");
+            Console.WriteLine("spara      spara uppgifterna");
+            Console.WriteLine("ladda      ladda listan todo.lis");
+            Console.WriteLine("aktivera   /uppgift/");
+            Console.WriteLine("klar       /uppgift/");
+            Console.WriteLine("vänta      /uppgift/");
+            Console.WriteLine("sluta      spara senast laddade filen och avsluta programmet!");
+            Console.WriteLine("");
         }
     }
     class MainClass

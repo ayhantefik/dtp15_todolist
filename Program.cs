@@ -1,4 +1,6 @@
-﻿namespace dtp15_todolist
+﻿using System.Data;
+
+namespace dtp15_todolist
 {
     public class Todo
     {
@@ -38,13 +40,21 @@
                 task = field[2];
                 taskDescription = field[3];
             }
-            public void Print(bool verbose = false)
+            public void Print(string command)
             {
                 string statusString = StatusToString(status);
                 Console.Write($"|{statusString,-12}|{priority,-6}|{task,-20}|");
-                if (verbose)
-                    Console.WriteLine($"{taskDescription,-40}|");
-                else
+                    if (command == "beskriv")
+                    {
+                        Console.WriteLine($"{taskDescription,-40}|");
+                    }
+                    else
+                    Console.WriteLine();
+            }
+            public void PrintAllt()
+            {
+                string statusString = StatusToString(status);
+                Console.Write($"|{statusString,-12}|{priority,-6}|{task,-20}|");
                     Console.WriteLine();
             }
         }
@@ -65,34 +75,48 @@
             sr.Close();
             Console.WriteLine($"Läste {numRead} rader.");
         }
-        private static void PrintHeadOrFoot(bool head, bool verbose)
+        private static void PrintHeadOrFoot(string command, bool head, bool verbose)
         {
             if (head)
             {
                 Console.Write("|status      |prio  |namn                |");
-                if (verbose) Console.WriteLine("beskrivning                             |");
+                if (command == "beskriv") Console.WriteLine("beskrivning                             |");
                 else Console.WriteLine();
             }
             Console.Write("|------------|------|--------------------|");
-            if (verbose) Console.WriteLine("----------------------------------------|");
+            if (command == "beskriv") Console.WriteLine("----------------------------------------|");
             else Console.WriteLine();
         }
-        private static void PrintHead(bool verbose)
+        private static void PrintHead(string command, bool verbose)
         {
-            PrintHeadOrFoot(head: true, verbose);
+            PrintHeadOrFoot(command, head: true, verbose);
         }
-        private static void PrintFoot(bool verbose)
+        private static void PrintFoot(string command, bool verbose)
         {
-            PrintHeadOrFoot(head: false, verbose);
+            PrintHeadOrFoot(command, head: false, verbose);
         }
-        public static void PrintTodoList(bool verbose = false)
+        public static void PrintTodoList(string command, bool verbose = false)
         {
-            PrintHead(verbose);
-            foreach (TodoItem item in list)
+            PrintHead(command, verbose);
+            if (!verbose)
             {
-                item.Print(verbose);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (Todo.list[i].status == 1)
+                    {
+                        Todo.list[i].Print(command);
+                    }
+                }
             }
-            PrintFoot(verbose);
+            else
+            {
+                foreach (TodoItem item in list)
+                {
+                    item.Print(command);
+                }
+            }
+
+            PrintFoot(command, verbose);
         }
         public static void PrintHelp()
         {
@@ -133,12 +157,16 @@
                     Console.WriteLine("Hej då!");
                     break;
                 }
+                else if (MyIO.Equals(command, "beskriv"))
+                {
+                    Todo.PrintTodoList(command, verbose: false);
+                }
                 else if (MyIO.Equals(command, "lista"))
                 {
                     if (MyIO.HasArgument(command, "allt"))
-                        Todo.PrintTodoList(verbose: true);
+                        Todo.PrintTodoList(command, verbose: true);
                     else
-                        Todo.PrintTodoList(verbose: false);
+                        Todo.PrintTodoList(command, verbose: false);
                 }
                 else
                 {

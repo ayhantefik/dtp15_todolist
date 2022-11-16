@@ -155,7 +155,6 @@ namespace dtp15_todolist
         public static void Main(string[] args)
         {
             Console.WriteLine("Välkommen till att-göra-listan!");
-            Todo.ReadListFromFile();
             Todo.PrintHelp();
             string command;
             do
@@ -169,6 +168,10 @@ namespace dtp15_todolist
                 {
                     Console.WriteLine("Hej då!");
                     break;
+                }
+                else if (MyIO.Equals(command, "lada"))
+                {
+                    Todo.ReadListFromFile();
                 }
                 else if (MyIO.Equals(command, "ny"))
                 {

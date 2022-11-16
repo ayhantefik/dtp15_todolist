@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.IO;
 
 namespace dtp15_todolist
 {
@@ -57,6 +58,19 @@ namespace dtp15_todolist
                 Console.Write($"|{statusString,-12}|{priority,-6}|{task,-20}|");
                     Console.WriteLine();
             }
+        }
+        public static void SaveList ()
+        {
+            using (StreamWriter sw = new StreamWriter("todo.lis"))
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    string line = $"{list[i].status}|{list[i].priority}|{list[i].task}|{list[i].taskDescription}";
+                    sw.WriteLine(line);
+                }
+            }
+                
+
         }
         public static void ReadListFromFile()
         {
@@ -169,7 +183,11 @@ namespace dtp15_todolist
                     Console.WriteLine("Hej då!");
                     break;
                 }
-                else if (MyIO.Equals(command, "lada"))
+                else if (MyIO.Equals(command, "spara"))
+                {
+                    Todo.SaveList();
+                }
+                else if (MyIO.Equals(command, "ladda"))
                 {
                     Todo.ReadListFromFile();
                 }

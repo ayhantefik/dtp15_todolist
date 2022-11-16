@@ -75,6 +75,19 @@ namespace dtp15_todolist
             sr.Close();
             Console.WriteLine($"Läste {numRead} rader.");
         }
+        public static void NewAssignment ()
+        {
+            string status = "1";
+            Console.Write("Uppgiftens namn: ");
+            string name = Console.ReadLine();
+            Console.Write("Prioritet: ");
+            string prio = Console.ReadLine();
+            Console.Write("Beskrivning: ");
+            string desc = Console.ReadLine();
+            string line = $"{status}|{prio}|{name}|{desc}";
+            TodoItem item = new TodoItem(line);
+            list.Add(item);
+        }
         private static void PrintHeadOrFoot(string command, bool head, bool verbose)
         {
             if (head)
@@ -156,6 +169,10 @@ namespace dtp15_todolist
                 {
                     Console.WriteLine("Hej då!");
                     break;
+                }
+                else if (MyIO.Equals(command, "ny"))
+                {
+                    Todo.NewAssignment();
                 }
                 else if (MyIO.Equals(command, "beskriv"))
                 {

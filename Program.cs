@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.IO;
 
 namespace dtp15_todolist
 {
@@ -16,7 +15,7 @@ namespace dtp15_todolist
             {
                 case Active: return "aktiv";
                 case Waiting: return "väntande";
-                case Ready: return "avklarad";
+                case Ready: return "klar";
                 default: return "(felaktig)";
             }
         }
@@ -45,21 +44,21 @@ namespace dtp15_todolist
             {
                 string statusString = StatusToString(status);
                 Console.Write($"|{statusString,-12}|{priority,-6}|{task,-20}|");
-                    if (command == "beskriv")
-                    {
-                        Console.WriteLine($"{taskDescription,-40}|");
-                    }
-                    else
+                if (command == "beskriv")
+                {
+                    Console.WriteLine($"{taskDescription,-40}|");
+                }
+                else
                     Console.WriteLine();
             }
             public void PrintAllt()
             {
                 string statusString = StatusToString(status);
                 Console.Write($"|{statusString,-12}|{priority,-6}|{task,-20}|");
-                    Console.WriteLine();
+                Console.WriteLine();
             }
         }
-        public static void SaveList ()
+        public static void SaveList()
         {
             using (StreamWriter sw = new StreamWriter("todo.lis"))
             {
@@ -69,7 +68,7 @@ namespace dtp15_todolist
                     sw.WriteLine(line);
                 }
             }
-                
+
 
         }
         public static void ReadListFromFile()
@@ -89,7 +88,7 @@ namespace dtp15_todolist
             sr.Close();
             Console.WriteLine($"Läste {numRead} rader.");
         }
-        public static void NewAssignment ()
+        public static void NewAssignment()
         {
             string status = "1";
             Console.Write("Uppgiftens namn: ");
@@ -145,6 +144,45 @@ namespace dtp15_todolist
 
             PrintFoot(command, verbose);
         }
+        public static void ChangeToActiv()
+        {
+            string aktivera1;
+            Console.Write("Skriv uppgift namn som ska ändras till aktiv: ");
+            aktivera1 = Console.ReadLine();
+            for (int i = 0; i < Todo.list.Count; i++)
+            {
+                if (aktivera1 == Todo.list[i].task)
+                {
+                    Todo.list[i].status = 1;
+                }
+            }
+        }
+        public static void ChangeToWaiting()
+        {
+            string waiting2;
+            Console.Write("Skriv uppgift namn som ska ändras till väntande: ");
+            waiting2 = Console.ReadLine();
+            for (int i = 0; i < Todo.list.Count; i++)
+            {
+                if (waiting2 == Todo.list[i].task)
+                {
+                    Todo.list[i].status = 2;
+                }
+            }
+        }
+        public static void ChangeToReady()
+        {
+            string ready3;
+            Console.Write("Skriv uppgift namn som ska ändras till avklarad: ");
+            ready3 = Console.ReadLine();
+            for (int i = 0; i < Todo.list.Count; i++)
+            {
+                if (ready3 == Todo.list[i].task)
+                {
+                    Todo.list[i].status = 3;
+                }
+            }
+        }
         public static void PrintHelp()
         {
             Console.WriteLine("Kommandon:");
@@ -183,14 +221,15 @@ namespace dtp15_todolist
                     Console.WriteLine("Hej då!");
                     break;
                 }
-                else if (MyIO.Equals(command, "spara"))
-                {
-                    Todo.SaveList();
-                }
                 else if (MyIO.Equals(command, "ladda"))
                 {
                     Todo.ReadListFromFile();
                 }
+                else if (MyIO.Equals(command, "spara"))
+                {
+                    Todo.SaveList();
+                }
+                
                 else if (MyIO.Equals(command, "ny"))
                 {
                     Todo.NewAssignment();
@@ -205,6 +244,18 @@ namespace dtp15_todolist
                         Todo.PrintTodoList(command, verbose: true);
                     else
                         Todo.PrintTodoList(command, verbose: false);
+                }
+                else if (MyIO.Equals(command, "aktivera"))
+                {
+                    Todo.ChangeToActiv();
+                }
+                else if (MyIO.Equals(command, "vänta"))
+                {
+                    Todo.ChangeToWaiting();
+                }
+                else if (MyIO.Equals(command, "klar"))
+                {
+                    Todo.ChangeToReady();
                 }
                 else
                 {

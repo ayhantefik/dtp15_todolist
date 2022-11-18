@@ -134,7 +134,7 @@ namespace dtp15_todolist
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (Todo.list[i].status == 1)
+                    if (Todo.list[i].status == 2)
                     {
                         Todo.list[i].Print(command);
                     }
@@ -148,6 +148,21 @@ namespace dtp15_todolist
                 }
             }
 
+            PrintFoot(command, verbose);
+        }
+        public static void PrintAllWaiting(string command, bool verbose = false)
+        {
+            PrintHead(command, verbose);
+            if (!verbose)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (Todo.list[i].status == 3)
+                    {
+                        Todo.list[i].Print(command);
+                    }
+                }
+            }
             PrintFoot(command, verbose);
         }
         public static void ChangeToActiv(string command)
@@ -218,19 +233,20 @@ namespace dtp15_todolist
         {
             Console.WriteLine("Kommandon:");
             Console.WriteLine();
-            Console.WriteLine("hjälp        lista denna hjälp");
+            Console.WriteLine("hjälp           lista denna hjälp");
             Console.WriteLine();
-            Console.WriteLine("ny           skapa en ny uppgift");
-            Console.WriteLine("beskriv      lista alla Active uppgifter och beskrivning");
-            Console.WriteLine("beskriv allt lista alla uppgifter (oavsätt status) och beskrivning");
-            Console.WriteLine("lista        lista alla Active uppgifter");
-            Console.WriteLine("lista allt   lista alla uppgifter oavsett status");
-            Console.WriteLine("spara        spara uppgifterna");
-            Console.WriteLine("ladda        ladda listan todo.lis");
-            Console.WriteLine("aktivera     /uppgift/");
-            Console.WriteLine("klar         /uppgift/");
-            Console.WriteLine("vänta        /uppgift/");
-            Console.WriteLine("sluta        spara senast laddade filen och avsluta programmet!");
+            Console.WriteLine("ny              skapa en ny uppgift");
+            Console.WriteLine("beskriv         lista alla Active uppgifter och beskrivning");
+            Console.WriteLine("beskriv allt    lista alla uppgifter (oavsätt status) och beskrivning");
+            Console.WriteLine("lista           lista alla Active uppgifter");
+            Console.WriteLine("lista allt      lista alla uppgifter oavsett status");
+            Console.WriteLine("lista väntante  lista alla väntande uppgifter");
+            Console.WriteLine("spara           spara uppgifterna");
+            Console.WriteLine("ladda           ladda listan todo.lis");
+            Console.WriteLine("aktivera        /uppgift/");
+            Console.WriteLine("klar            /uppgift/");
+            Console.WriteLine("vänta           /uppgift/");
+            Console.WriteLine("sluta           spara senast laddade filen och avsluta programmet!");
             Console.WriteLine("");
         }
     }
@@ -280,6 +296,10 @@ namespace dtp15_todolist
                         Todo.PrintTodoList(command, verbose: true);
                     else
                         Todo.PrintTodoList(command, verbose: false);
+                }
+                else if (MyIO.Equals(command, "lista väntande"))
+                {
+                    Todo.PrintAllWaiting(command, verbose: false);
                 }
                 else if (MyIO.Equals(command, "aktivera"))
                 {

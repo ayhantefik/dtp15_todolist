@@ -64,16 +64,43 @@ namespace dtp15_todolist
                 Console.WriteLine();
             }
         }
-        public static void SaveList()
+        public static void SaveList(string command)
         {
-            using (StreamWriter sw = new StreamWriter("todo.lis"))
+            string we = command.Trim();
+            string[] cwords = we.Split(' ');
+            if (cwords[0] == "spara")
             {
-                for (int i = 0; i < list.Count; i++)
+                if(cwords.Length < 2)
                 {
-                    string line = $"{list[i].status}|{list[i].priority}|{list[i].task}|{list[i].taskDescription}";
-                    sw.WriteLine(line);
+                    using (StreamWriter sw = new StreamWriter("todo.lis"))
+                    {
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            string line = $"{list[i].status}|{list[i].priority}|{list[i].task}|{list[i].taskDescription}";
+                            sw.WriteLine(line);
+                        }
+                    }
+                    Console.WriteLine("Listan är sparad i filen todo.lis");
+                }
+                else if (cwords.Length == 2)
+                {
+                    string filename = $"{cwords[1]}";
+                    using (StreamWriter sw = new StreamWriter(filename))
+                    {
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            string line = $"{list[i].status}|{list[i].priority}|{list[i].task}|{list[i].taskDescription}";
+                            sw.WriteLine(line);
+                        }
+                        Console.WriteLine($"Listan är sparad i filen '{cwords[1]}'");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Fil namnet får inte ha mellanslag!");
                 }
             }
+            
         }
         public static void ReadListFromFile()
         {
@@ -299,6 +326,7 @@ namespace dtp15_todolist
             Console.WriteLine("lista väntante  listar alla väntande uppgifter");
             Console.WriteLine("lista klara     listar alla klara uppgifter");
             Console.WriteLine("spara           sparar uppgifterna");
+            Console.WriteLine("spara /fil/     sparar uppgifterna på filen /fil/");
             Console.WriteLine("ladda           laddar listan todo.lis");
             Console.WriteLine("aktivera        /uppgift/");
             Console.WriteLine("klar            /uppgift/");
@@ -333,7 +361,7 @@ namespace dtp15_todolist
                 }
                 else if (MyIO.Equals(command, "spara"))
                 {
-                    Todo.SaveList();
+                    Todo.SaveList(command);
                 }
                 else if (MyIO.Equals(command, "ny"))
                 {

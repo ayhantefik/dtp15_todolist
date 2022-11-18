@@ -74,8 +74,6 @@ namespace dtp15_todolist
                     sw.WriteLine(line);
                 }
             }
-
-
         }
         public static void ReadListFromFile()
         {
@@ -94,18 +92,55 @@ namespace dtp15_todolist
             sr.Close();
             Console.WriteLine($"Läste {numRead} rader.");
         }
-        public static void NewAssignment()
+        public static void NewAssignment(string command)
         {
-            string status = "1";
-            Console.Write("Uppgiftens namn: ");
-            string name = Console.ReadLine();
-            Console.Write("Prioritet: ");
-            string prio = Console.ReadLine();
-            Console.Write("Beskrivning: ");
-            string desc = Console.ReadLine();
-            string line = $"{status}|{prio}|{name}|{desc}";
-            TodoItem item = new TodoItem(line);
-            list.Add(item);
+            string status, name, prio, desc, line;
+            string we = command.Trim();
+            string[] cwords = we.Split(' ');
+            if (cwords[0] == "ny")
+            {
+                if (cwords.Length < 2)
+                {
+                    status = "1";
+                    Console.Write("Uppgiftens namn: ");
+                    name = Console.ReadLine();
+                    Console.Write("Prioritet: ");
+                    prio = Console.ReadLine();
+                    Console.Write("Beskrivning: ");
+                    desc = Console.ReadLine();
+                    line = $"{status}|{prio}|{name}|{desc}";
+                    TodoItem item = new TodoItem(line);
+                    list.Add(item);
+                }
+                else if (cwords.Length == 2)
+                {
+                    name = $"{cwords[1]}";
+                    status = "1";
+                    Console.Write("Prioritet: ");
+                    prio = Console.ReadLine();
+                    Console.Write("Beskrivning: ");
+                    desc = Console.ReadLine();
+                    line = $"{status}|{prio}|{name}|{desc}";
+                    TodoItem item = new TodoItem(line);
+                    list.Add(item);
+                }
+                else if (cwords.Length == 3)
+                {
+                    name = $"{cwords[1]} {cwords[2]}";
+                    status = "1";
+                    Console.Write("Prioritet: ");
+                    prio = Console.ReadLine();
+                    Console.Write("Beskrivning: ");
+                    desc = Console.ReadLine();
+                    line = $"{status}|{prio}|{name}|{desc}";
+                    TodoItem item = new TodoItem(line);
+                    list.Add(item);
+                }
+                else
+                {
+                    Console.WriteLine("Uppgiftens namn ska vara max 2 ord!");
+                }
+            }
         }
         private static void PrintHeadOrFoot(string command, bool head, bool verbose)
         {
@@ -256,6 +291,7 @@ namespace dtp15_todolist
             Console.WriteLine("hjälp           listar denna hjälp");
             Console.WriteLine();
             Console.WriteLine("ny              skapar en ny uppgift");
+            Console.WriteLine("ny              /uppgift/");
             Console.WriteLine("beskriv         listar alla Active uppgifter och beskrivning");
             Console.WriteLine("beskriv allt    listar alla uppgifter (oavsätt status) och beskrivning");
             Console.WriteLine("lista           listar alla Active uppgifter");
@@ -299,10 +335,9 @@ namespace dtp15_todolist
                 {
                     Todo.SaveList();
                 }
-
                 else if (MyIO.Equals(command, "ny"))
                 {
-                    Todo.NewAssignment();
+                        Todo.NewAssignment(command);
                 }
                 else if (MyIO.Equals(command, "beskriv"))
                 {

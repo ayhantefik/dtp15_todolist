@@ -1,5 +1,7 @@
 ﻿using System.Data;
 
+using System.Data;
+
 namespace dtp15_todolist
 {
     public class Todo
@@ -132,11 +134,44 @@ namespace dtp15_todolist
             PrintHead(command, verbose);
             if (!verbose)
             {
-                for (int i = 0; i < list.Count; i++)
+                if (command == "lista")
                 {
-                    if (Todo.list[i].status == 2)
+                    for (int i = 0; i < list.Count; i++)
                     {
-                        Todo.list[i].Print(command);
+                        if (Todo.list[i].status == 1)
+                        {
+                            Todo.list[i].Print(command);
+                        }
+                    }
+                }
+                else if (command == "lista väntande")
+                {
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (Todo.list[i].status == 2)
+                        {
+                            Todo.list[i].Print(command);
+                        }
+                    }
+                }
+                else if (command == "lista klara")
+                {
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (Todo.list[i].status == 3)
+                        {
+                            Todo.list[i].Print(command);
+                        }
+                    }
+                }
+                else if (command == "beskriv")
+                {
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (Todo.list[i].status == 1)
+                        {
+                            Todo.list[i].Print(command);
+                        }
                     }
                 }
             }
@@ -148,21 +183,6 @@ namespace dtp15_todolist
                 }
             }
 
-            PrintFoot(command, verbose);
-        }
-        public static void PrintAllWaiting(string command, bool verbose = false)
-        {
-            PrintHead(command, verbose);
-            if (!verbose)
-            {
-                for (int i = 0; i < list.Count; i++)
-                {
-                    if (Todo.list[i].status == 3)
-                    {
-                        Todo.list[i].Print(command);
-                    }
-                }
-            }
             PrintFoot(command, verbose);
         }
         public static void ChangeToActiv(string command)
@@ -219,12 +239,12 @@ namespace dtp15_todolist
             else
             {
                 for (int i = 0; i < Todo.list.Count; i++)
+                {
+                    if (expected == Todo.list[i].task)
                     {
-                        if (expected == Todo.list[i].task)
-                        {
-                            Todo.list[i].status = 3;
-                        }
+                        Todo.list[i].status = 3;
                     }
+                }
                 Console.WriteLine($"{cwords[1]} {cwords[2]} har ändrats till klar!");
             }
 
@@ -233,20 +253,21 @@ namespace dtp15_todolist
         {
             Console.WriteLine("Kommandon:");
             Console.WriteLine();
-            Console.WriteLine("hjälp           lista denna hjälp");
+            Console.WriteLine("hjälp           listar denna hjälp");
             Console.WriteLine();
-            Console.WriteLine("ny              skapa en ny uppgift");
-            Console.WriteLine("beskriv         lista alla Active uppgifter och beskrivning");
-            Console.WriteLine("beskriv allt    lista alla uppgifter (oavsätt status) och beskrivning");
-            Console.WriteLine("lista           lista alla Active uppgifter");
-            Console.WriteLine("lista allt      lista alla uppgifter oavsett status");
-            Console.WriteLine("lista väntante  lista alla väntande uppgifter");
-            Console.WriteLine("spara           spara uppgifterna");
-            Console.WriteLine("ladda           ladda listan todo.lis");
+            Console.WriteLine("ny              skapar en ny uppgift");
+            Console.WriteLine("beskriv         listar alla Active uppgifter och beskrivning");
+            Console.WriteLine("beskriv allt    listar alla uppgifter (oavsätt status) och beskrivning");
+            Console.WriteLine("lista           listar alla Active uppgifter");
+            Console.WriteLine("lista allt      listar alla uppgifter oavsett status");
+            Console.WriteLine("lista väntante  listar alla väntande uppgifter");
+            Console.WriteLine("lista klara     listar alla klara uppgifter");
+            Console.WriteLine("spara           sparar uppgifterna");
+            Console.WriteLine("ladda           laddar listan todo.lis");
             Console.WriteLine("aktivera        /uppgift/");
             Console.WriteLine("klar            /uppgift/");
             Console.WriteLine("vänta           /uppgift/");
-            Console.WriteLine("sluta           spara senast laddade filen och avsluta programmet!");
+            Console.WriteLine("sluta           sparar senast laddade filen och avsluta programmet!");
             Console.WriteLine("");
         }
     }
@@ -278,7 +299,7 @@ namespace dtp15_todolist
                 {
                     Todo.SaveList();
                 }
-                
+
                 else if (MyIO.Equals(command, "ny"))
                 {
                     Todo.NewAssignment();
@@ -288,7 +309,7 @@ namespace dtp15_todolist
                     if (MyIO.HasArgument(command, "allt"))
                         Todo.PrintTodoList(command, verbose: true);
                     else
-                    Todo.PrintTodoList(command, verbose: false);
+                        Todo.PrintTodoList(command, verbose: false);
                 }
                 else if (MyIO.Equals(command, "lista"))
                 {
@@ -299,7 +320,11 @@ namespace dtp15_todolist
                 }
                 else if (MyIO.Equals(command, "lista väntande"))
                 {
-                    Todo.PrintAllWaiting(command, verbose: false);
+                    Todo.PrintTodoList(command, verbose: false);
+                }
+                else if (MyIO.Equals(command, "lista klara"))
+                {
+                    Todo.PrintTodoList(command, verbose: false);
                 }
                 else if (MyIO.Equals(command, "aktivera"))
                 {
